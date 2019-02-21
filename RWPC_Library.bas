@@ -115,21 +115,49 @@ Function convertColNumToLetter(colNum As Long)
     End If
 
     Dim n As Long
-    Dim c As Byte
+    Dim C As Byte
     Dim s As String
 
     n = colNum
     Do
-        c = ((n - 1) Mod 26)
-        s = Chr(c + 65) & s
-        n = (n - c) \ 26
+        C = ((n - 1) Mod 26)
+        s = Chr(C + 65) & s
+        n = (n - C) \ 26
     Loop While n > 0
     convertColNumToLetter = s
 
 End Function
+'***********************************************************************************************
+'Description: Imports CSV file specified in filepath var, and uses the colTypes array to determine
+' column types when importing {General, text date, etc.}
+'Args: (String) filePath, (Variant Arr) colTypes
+'Return: none
+'***********************************************************************************************
+Function ImportCSV(filePath As String, colTypes As Variant)
+Application.CutCopyMode = False
+    With ActiveSheet.QueryTables.Add(Connection:= _
+        "TEXT;" & filePath, Destination:= _
+        Range("$A$1"))
+        .FieldNames = True
+        .PreserveFormatting = True
+        .RefreshOnFileOpen = False
+        .RefreshStyle = xlInsertDeleteCells
+        .SavePassword = False
+        .SaveData = True
+        .AdjustColumnWidth = True
+        .RefreshPeriod = 0
+        .TextFilePromptOnRefresh = False
+        .TextFilePlatform = 437
+        .TextFileStartRow = 1
+        .TextFileParseType = xlDelimited
+        .TextFileTextQualifier = xlTextQualifierDoubleQuote
+        .TextFileConsecutiveDelimiter = False
+        .TextFileTabDelimiter = False
+        .TextFileSemicolonDelimiter = False
+        .TextFileCommaDelimiter = True
+        .TextFileColumnDataTypes = colTypes
+        .TextFileTrailingMinusNumbers = True
+        .Refresh BackgroundQuery:=False
+    End With
+End Function
 
-Sub Sandbox()
-Debug.Print (findLastRowByColLetter("AAAAA"))
-
- 
-End Sub
