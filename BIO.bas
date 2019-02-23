@@ -8,14 +8,22 @@ currSheet = Application.ActiveSheet.Name
 'load config
 LoadConfig
 
+'if the active sheet is not the config sheet && totally blank use that sheet, otherwise create a new sheet
+
 'get filepath
 Dim filePath As String
 filePath = RWPC_Library.PromptForFileLocation
 
 'import file
+If (Not spreadsheetIsEmpty(currSheet)) Then
+    MsgBox "The current sheet is not blank, adding a new sheet to complete the import", vbInformation
+    Sheets.Add
+    currSheet = Application.ActiveSheet.Name
+End If
+ 
 Sheets(currSheet).Select
-RWPC_Library.ImportCSV filePath, importTypes
 
+RWPC_Library.ImportCSV filePath, importTypes
 
 End Sub
 

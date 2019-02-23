@@ -1,45 +1,23 @@
 Attribute VB_Name = "RWPC_Library"
 Sub Macro2()
 Attribute Macro2.VB_ProcData.VB_Invoke_Func = " \n14"
+Dim sheetName As String
+sheetName = "Config"
+ Sheets(sheetName).Select
+  '  spreadsheetIsEmtpy = (WorksheetFunction.CountA(ActiveSheet.UsedRange) = 0)
+Debug.Print (spreadsheetIsEmpty("Config"))
 
-'Prompt user for file path (treasury file)
-    Dim filePath As String
-    filePath = PromptForFileLocation()
-    If (filePath = "Null") Then
-        MsgBox ("No file chosen! Aborting")
-        Exit Sub
-    End If
-    
-'Import treasury file as text for each column
-    Application.CutCopyMode = False
-    With ActiveSheet.QueryTables.Add(Connection:= _
-        "TEXT;" & filePath, Destination:= _
-        Range("$A$1"))
-        .Name = "all_tas_betc"
-        .FieldNames = True
-        .PreserveFormatting = True
-        .RefreshOnFileOpen = False
-        .RefreshStyle = xlInsertDeleteCells
-        .SavePassword = False
-        .SaveData = True
-        .AdjustColumnWidth = True
-        .RefreshPeriod = 0
-        .TextFilePromptOnRefresh = False
-        .TextFilePlatform = 437
-        .TextFileStartRow = 1
-        .TextFileParseType = xlDelimited
-        .TextFileTextQualifier = xlTextQualifierDoubleQuote
-        .TextFileConsecutiveDelimiter = False
-        .TextFileTabDelimiter = False
-        .TextFileSemicolonDelimiter = False
-        .TextFileCommaDelimiter = True
-        .TextFileColumnDataTypes = Array(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
-        .TextFileTrailingMinusNumbers = True
-        .Refresh BackgroundQuery:=False
-    End With
-    MsgBox (ActiveSheet.QueryTables(1).ResultRange.Columns.Count)
-    
+
 End Sub
+'*********************************************************************************************
+'Description: Checks if provided sheet name is empty (devoid of any content in any cells)
+'Arg: sheetName (String)
+'*********************************************************************************************
+Function spreadsheetIsEmpty(sheetName As String)
+    Sheets(sheetName).Select
+    spreadsheetIsEmpty = (WorksheetFunction.CountA(ActiveSheet.UsedRange) = 0)
+End Function
+
 '*********************************************************************************************
 'Description: Function prompts user to pick a file on their computer/mapped/networked drive
 '  The function then returns the file path, or null if nothing was selected.
