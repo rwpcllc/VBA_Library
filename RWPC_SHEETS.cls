@@ -1,14 +1,14 @@
-"'*********************************************************************************************
+'*********************************************************************************************
 'Description: Checks if provided sheet exists in workbook)
 'Arg: sheetName (String)
 '*********************************************************************************************
 Function spreadsheetExists(sheetName As String) As Boolean
     On Error GoTo FAILURE
-    spreadsheetExists = Evaluate(""ISREF('"" & sheetName & ""'!A1)"")
+    spreadsheetExists = Evaluate("ISREF('" & sheetName & "'!A1)")
     Exit Function
 
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""WorksheetExists():"" & Err.Description
+    Err.Raise Err.Number, Err.source, "WorksheetExists():" & Err.Description
 End Function
 
 '*********************************************************************************************
@@ -21,7 +21,7 @@ Function spreadsheetIsEmpty(sheetName As String)
     spreadsheetIsEmpty = (WorksheetFunction.CountA(ActiveSheet.UsedRange) = 0)
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""spreadsheetIsEmtpy("" & sheetName & ""):"" & Err.Description
+    Err.Raise Err.Number, Err.source, "spreadsheetIsEmtpy(" & sheetName & "):" & Err.Description
     
 End Function
-"
+

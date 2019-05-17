@@ -1,4 +1,4 @@
-"'Description: takes in a source string and pattern and applies regex against the source
+'Description: takes in a source string and pattern and applies regex against the source
 'then returns the first match
 Function RegexFirstMatch(source As String, pattern As String)
     On Error GoTo FAILURE
@@ -19,11 +19,11 @@ Function RegexFirstMatch(source As String, pattern As String)
     If (matches.Count <> 0) Then
         RegexFirstMatch = matches.Item(0)
     Else
-        RegexFirstMatch = """"
+        RegexFirstMatch = ""
     End If
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""RegexMatch():"" & Err.Description
+    Err.Raise Err.Number, Err.source, "RegexMatch():" & Err.Description
 
 End Function
 
@@ -45,7 +45,7 @@ Function RegexMatchBool(source As String, pattern As String)
     RegexMatchBool = regex.test(source)
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""RegexMatchBool():"" & Err.Description
+    Err.Raise Err.Number, Err.source, "RegexMatchBool():" & Err.Description
 
 End Function
-"
+

@@ -1,4 +1,4 @@
-"
+
 
 '*********************************************************************************************
 'Description: Function prompts user to pick a file on their computer/mapped/networked drive
@@ -9,16 +9,16 @@ Function PromptForFileLocation()
     Dim picker As Object
     Set picker = Application.FileDialog(msoFileDialogFilePicker)
     picker.AllowMultiSelect = False
-    picker.Filters.Add ""ALL"", ""*.*"", 1
+    picker.Filters.Add "ALL", "*.*", 1
     picker.Show
     
     If (picker.SelectedItems.Count > 0) Then
         PromptForFileLocation = picker.SelectedItems.Item(1)
     Else
-        PromptForFileLocation = ""null""
+        PromptForFileLocation = "null"
     End If
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""PromptForfileLocation()"" & Err.Description
+    Err.Raise Err.Number, Err.source, "PromptForfileLocation()" & Err.Description
 
 End Function
 
@@ -33,8 +33,8 @@ Function ImportCSV(filePath As String, colTypes As Variant)
     On Error GoTo FAILURE
     Application.CutCopyMode = False
         With ActiveSheet.QueryTables.Add(Connection:= _
-            ""TEXT;"" & filePath, Destination:= _
-            Range(""$A$1""))
+            "TEXT;" & filePath, Destination:= _
+            Range("$A$1"))
             .FieldNames = True
             .PreserveFormatting = True
             .RefreshOnFileOpen = False
@@ -58,7 +58,7 @@ Function ImportCSV(filePath As String, colTypes As Variant)
         End With
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""ImportCSV("" & filePath & ""):"" & Err.Description
+    Err.Raise Err.Number, Err.source, "ImportCSV(" & filePath & "):" & Err.Description
 End Function
 '*******************************************************************
 'Description Saves file at given filepath
@@ -72,7 +72,7 @@ Function SaveFile(filePath As String)
         :=xlOpenXMLWorkbookMacroEnabled, CreateBackup:=False
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""SaveFile("" & filePath & ""}: "" & Err.Description
+    Err.Raise Err.Number, Err.source, "SaveFile(" & filePath & "}: " & Err.Description
 End Function
 '*****************************************************************************
 'Description: Prompts user with filepicker to get folder to save a file in
@@ -89,14 +89,14 @@ Function PromptForSaveLocation()
     If (picker.SelectedItems.Count > 0) Then
         PromptForSaveLocation = picker.SelectedItems.Item(1)
     Else
-        Err.Raise 1, ""Source"", ""User did not select a save location.""
+        Err.Raise 1, "Source", "User did not select a save location."
     End If
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""PromptForSaveLocation():"" & Err.Description
+    Err.Raise Err.Number, Err.source, "PromptForSaveLocation():" & Err.Description
 End Function
 
 
 
 
-"
+

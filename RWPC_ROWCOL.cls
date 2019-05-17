@@ -1,17 +1,17 @@
-"'***********************************************************************************************
+'***********************************************************************************************
 'Description: This function converts a supplied letter into the corresponding column number
 'Args: (string) colLetter -- letter of the column
 'Return: (long) column number
 '***********************************************************************************************
 Function convertColLetterToNum(colLetter As Variant)
     On Error GoTo FAILURE
-    If (Len(colLetter) > 3 Or colLetter > ""XFD"") Then
-        Err.Raise 1, , ""provided letter exceeds Excel limit of XFD""
+    If (Len(colLetter) > 3 Or colLetter > "XFD") Then
+        Err.Raise 1, , "provided letter exceeds Excel limit of XFD"
     End If
     convertColLetterToNum = Range(colLetter & 1).column
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""convertColLetterToNum()"" + Err.Description
+    Err.Raise Err.Number, Err.source, "convertColLetterToNum()" + Err.Description
 End Function
 
 '***********************************************************************************************
@@ -22,12 +22,12 @@ End Function
 Function convertColNumToLetter(colNum As Variant)
     On Error GoTo FAILURE
     If (Not IsNumeric(colNum)) Then
-        Err.Raise 1, , ""Invalid input, number not provided as argument""
+        Err.Raise 1, , "Invalid input, number not provided as argument"
     End If
     Dim num As Long: num = CLng(colNum)
     
     If (num > 16384 Or num < 1) Then
-       Err.Raise 1, , ""Column number: "" & colNum & "" exceeds Excel range of 1 to 16384""
+       Err.Raise 1, , "Column number: " & colNum & " exceeds Excel range of 1 to 16384"
     End If
 
     Dim n As Long
@@ -43,7 +43,7 @@ Function convertColNumToLetter(colNum As Variant)
     convertColNumToLetter = s
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""convertColNumToLetter():"" & Err.Description
+    Err.Raise Err.Number, Err.source, "convertColNumToLetter():" & Err.Description
 End Function
 
 '***********************************************************************************************
@@ -64,7 +64,7 @@ Function findColByName(headerRow As Long, colName As String, Optional returnStri
     Next i
     
     If (Not nameFound) Then
-        Err.Raise 1, , ""Could not find column named: "" & colName
+        Err.Raise 1, , "Could not find column named: " & colName
     End If
     
     If (returnString) Then
@@ -72,7 +72,7 @@ Function findColByName(headerRow As Long, colName As String, Optional returnStri
     End If
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""findColByName("" & headerRow & "","" & colName & ""):"" & Err.Description
+    Err.Raise Err.Number, Err.source, "findColByName(" & headerRow & "," & colName & "):" & Err.Description
 End Function
 
 '***********************************************************************************************
@@ -82,13 +82,13 @@ End Function
 '***********************************************************************************************
 Function findLastColumn(rowNum As Long, Optional returnString As Boolean = False)
     On Error GoTo FAILURE
-    Range(""XFD"" & rowNum).Select
-    If (Selection = """") Then
+    Range("XFD" & rowNum).Select
+    If (Selection = "") Then
         Selection.End(xlToLeft).Select
     End If
     
-    If (ActiveCell.value = """") Then
-        Err.Raise 1, , ""No values found in given row""
+    If (ActiveCell.value = "") Then
+        Err.Raise 1, , "No values found in given row"
     End If
     If (returnString) Then
         findLastColumn = convertColNumToLetter(ActiveCell.column)
@@ -97,7 +97,7 @@ Function findLastColumn(rowNum As Long, Optional returnString As Boolean = False
     End If
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""findLastColumn():"" & Err.Description
+    Err.Raise Err.Number, Err.source, "findLastColumn():" & Err.Description
 End Function
 
 Function findLastRow(col As Variant)
@@ -106,30 +106,30 @@ Function findLastRow(col As Variant)
     
     If (IsNumeric(col)) Then
         If (col > 16384 Or col < 1) Then
-            Err.Raise 1, , ""Column number: "" & col & "" exceeds Excel column range 1 to 16384""
+            Err.Raise 1, , "Column number: " & col & " exceeds Excel column range 1 to 16384"
         End If
               
         column = convertColNumToLetter(col)
     Else
-        If (col > ""XFD"" Or Len(col) > 3) Then
-            Err.Raise 1, , ""Column Letter: "" & col & "" exceeds Excel column range A to XFD""
+        If (col > "XFD" Or Len(col) > 3) Then
+            Err.Raise 1, , "Column Letter: " & col & " exceeds Excel column range A to XFD"
         End If
         column = col
     End If
         
     Range(column & 1048576).Select
-    If (ActiveCell.value = """") Then
+    If (ActiveCell.value = "") Then
         Selection.End(xlUp).Select
     End If
     
-    If (ActiveCell.value = """") Then
-        Err.Raise 1, ""Src"", ""Cannot find last row, column is empty""
+    If (ActiveCell.value = "") Then
+        Err.Raise 1, "Src", "Cannot find last row, column is empty"
     End If
     
     findLastRow = ActiveCell.Row
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""findLastRow("" & col & ""):"" & Err.Description
+    Err.Raise Err.Number, Err.source, "findLastRow(" & col & "):" & Err.Description
 End Function
 
 '***********************************************************************************************
@@ -139,22 +139,22 @@ End Function
 '***********************************************************************************************
 Function moveColumnBehind(sourceCol As String, targetCol As String)
     On Error GoTo FAILURE
-    If (sourceCol > ""XFD"" Or targetCol > ""XFD"") Then
-        Err.Raise 1, , ""Target or Source columns exceed Excel Column limit range""
+    If (sourceCol > "XFD" Or targetCol > "XFD") Then
+        Err.Raise 1, , "Target or Source columns exceed Excel Column limit range"
     End If
     
     If (sourceCol = targetCol) Then
-        Err.Raise 1, ""Source column equals target column""
+        Err.Raise 1, "Source column equals target column"
     End If
     
-    Columns(sourceCol & "":"" & sourceCol).Select
+    Columns(sourceCol & ":" & sourceCol).Select
     Application.CutCopyMode = False
     Selection.Cut
-    Columns(targetCol & "":"" & targetCol).Select
+    Columns(targetCol & ":" & targetCol).Select
     Selection.Insert Shift:=xlToRight
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""moveColumnBehindColumn("" & sourceCol & "","" & targetCol & ""):"" & Err.Description
+    Err.Raise Err.Number, Err.source, "moveColumnBehindColumn(" & sourceCol & "," & targetCol & "):" & Err.Description
 End Function
 
 
@@ -165,11 +165,11 @@ End Function
 '***********************************************************************************************
 Function removeColByLetter(colLetter As String)
     On Error GoTo FAILURE
-    Columns(colLetter & "":"" & colLetter).Select
+    Columns(colLetter & ":" & colLetter).Select
     Selection.Delete Shift:=xlToLeft
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""removeColByLetter("" & colLetter & ""):"" & Err.Description
+    Err.Raise Err.Number, Err.source, "removeColByLetter(" & colLetter & "):" & Err.Description
 End Function
 
 
@@ -185,7 +185,7 @@ Function removeColByName(headerRow As Long, colName As String)
     removeColByLetter (colLetter)
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""removeColByName("" & headerRow & "","" & colName & ""): "" & Err.Description
+    Err.Raise Err.Number, Err.source, "removeColByName(" & headerRow & "," & colName & "): " & Err.Description
     
 End Function
 
@@ -200,7 +200,7 @@ Function removeColByNum(colNum As Long)
     removeColByLetter (colLetter)
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""removeColByNum("" & colNum & ""):"" & Err.Description
+    Err.Raise Err.Number, Err.source, "removeColByNum(" & colNum & "):" & Err.Description
 End Function
 
 '***********************************************************************************************
@@ -210,11 +210,11 @@ End Function
 '***********************************************************************************************
 Function removeRow(rowNum As Long)
     On Error GoTo FAILURE
-    Rows(rowNum & "":"" & rowNum).Select
+    Rows(rowNum & ":" & rowNum).Select
     Selection.Delete Shift:=xlUp
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""removeRow():"" & Err.Description
+    Err.Raise Err.Number, Err.source, "removeRow():" & Err.Description
 End Function
 
 
@@ -229,7 +229,7 @@ Function resizeAll()
     Cells.EntireColumn.AutoFit
     Exit Function
 FAILURE:
-    Err.Raise Err.Number, Err.source, ""resizeAll():"" & Err.Description
+    Err.Raise Err.Number, Err.source, "resizeAll():" & Err.Description
 End Function
 
-"
+

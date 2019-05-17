@@ -1,0 +1,14 @@
+To Do
+
+
+Expectations:
+	A function that takes in three parameters, two files, and a key definition 
+	spits out a log here are the records that exist in A and not in B, that exist in B but dont exist in A, and records where the key is in both, but one of the other fields disagree
+
+	files could be csv or xlsx, if xlsx prompt for which sheet to use, if its a 
+
+	would expect this function would do some kind of anlaysis of the format to ensure that they are identical in structure
+		if there is a structural difference give fix your shit error
+
+
+Exam Diff
