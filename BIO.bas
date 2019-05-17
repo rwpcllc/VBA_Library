@@ -1,3 +1,4 @@
+'some comment
 Attribute VB_Name = "BIO"
 Dim importTypes() As Variant
 
